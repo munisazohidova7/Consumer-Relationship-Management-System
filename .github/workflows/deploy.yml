@@ -37,3 +37,5 @@ jobs:
               --spring.datasource.username=root \
               --spring.datasource.password=coderslab \
               --server.port=7777 > ~/app.log 2>&1 &
+            disown
+            echo "Deploy muvaffaqiyatli!"
