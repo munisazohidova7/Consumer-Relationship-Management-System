@@ -28,11 +28,9 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           command_timeout: 30m
           script: |
-           script: |
             cd ~/Consumer-Relationship-Management-System
             git config pull.rebase false
             git pull origin main
             mvn clean package -DskipTests
             sudo systemctl restart crm
             echo "Deploy tugadi!"
-           
