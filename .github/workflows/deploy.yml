@@ -26,11 +26,17 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
-          command_timeout: 30m
           script: |
             cd ~/Consumer-Relationship-Management-System
-            git config pull.rebase false
             git pull origin main
             mvn clean package -DskipTests
-            sudo systemctl restart crm
-            echo "Deploy tugadi!"
+            pkill -f "java -jar" || true
+            sleep 2
+            nohup java -jar target/*.jar \
+              --spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL5InnoDBDialect \
+              --spring.datasource.url="jdbc:mysql://localhost:3306/crm?allowPublicKeyRetrieval=true&useSSL=false" \
+              --spring.datasource.username=root \
+              --spring.datasource.password=coderslab \
+              --server.port=7777 > ~/app.log 2>&1 &
+            disown
+            echo "Deploy muvaffaqiyatli!"
